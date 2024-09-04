@@ -489,6 +489,8 @@ for (let i = 0; i < 7; i++) {
         const slotEnd = new Date(slotStart);
         slotEnd.setMinutes(slotStart.getMinutes() + 30);
 
+        const now = new Date();
+
         const isBusinessDay = businessDays.some(businessDay => {
             const businessDayStart = new Date(businessDay.start);
             const businessDayEnd = new Date(businessDay.end);
@@ -509,8 +511,13 @@ for (let i = 0; i < 7; i++) {
             return acc;
         }, 0);
 
+        // すでに過ぎた時間のセルを '✕' に設定
+        if (slotEnd <= now) {
+            cell.textContent = '✕';
+            cell.classList.add('unavailable');
+        }
         // 営業日のイベント時間内に他のイベントがある場合
-        if (isBusinessEventTime && count > 0) {
+        else if (isBusinessEventTime && count > 0) {
             cell.textContent = '✕';
             cell.classList.add('unavailable');
         }
@@ -519,13 +526,13 @@ for (let i = 0; i < 7; i++) {
             cell.textContent = '◯';
             cell.classList.add('available');
         }
-// 日月火木金が休みで、営業日ではない場合
-else if ((slotStart.getDay() === 0 || slotStart.getDay() === 1 || 
-          slotStart.getDay() === 2 || slotStart.getDay() === 4 || 
-          slotStart.getDay() === 5) && !isBusinessDay && businessEventTimes.length === 0) {
-    cell.textContent = '✕';
-    cell.classList.add('unavailable');
-}
+        // 日月火木金が休みで、営業日ではない場合
+        else if ((slotStart.getDay() === 0 || slotStart.getDay() === 1 || 
+                  slotStart.getDay() === 2 || slotStart.getDay() === 4 || 
+                  slotStart.getDay() === 5) && !isBusinessDay && businessEventTimes.length === 0) {
+            cell.textContent = '✕';
+            cell.classList.add('unavailable');
+        }
         // 営業日でかつ他のイベントがない場合
         else if (isBusinessDay && count === 0) {
             cell.textContent = '◯';
@@ -543,7 +550,6 @@ else if ((slotStart.getDay() === 0 || slotStart.getDay() === 1 ||
         cell.setAttribute('data-date', slotStart.toISOString());
     }
 }
-
     
         }
 
