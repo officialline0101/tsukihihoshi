@@ -208,7 +208,6 @@
         <div class="symptoms">
             <button type="button" onclick="selectSymptom(this)">整体・ボディケア60分</button>
             <button type="button" onclick="selectSymptom(this)">整体ボディケア＋セルフ整体エクササイズ</button>
-            <button type="button" onclick="selectSymptom(this)">ハンドクレイパック＋整脚フットケア</button>
         </div>
 
         <div class="label">症状（複数選択可能）</div>
@@ -349,8 +348,8 @@ function selectDate(cell) {
             };
 
 // フォームデータのチェック
-if (!formData.name || !formData.phone) {
-    alert('お名前・電話番号ご記入ください。');
+if (!formData.name || !formData.phone || !formData.selectedSymptom) {
+    alert('お名前・電話番号・コースをご記入ください。');
     return;
 }
 
